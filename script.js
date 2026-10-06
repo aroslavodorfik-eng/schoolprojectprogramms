@@ -1,5 +1,5 @@
 // ВСТАВЬ СЮДА СВОЮ ССЫЛКУ ИЗ GOOGLE APPS SCRIPT
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw4cUYD5QvlF-Kc2ypKU3VppHTsQ-Vhlf0A2nR9Vj2LdStAS9Y5DqySkPOR6OkSvWgW/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8Xzaih8CvjN9HY1sAYRZKgps20PUzCBEY6iXw5IhXdzUGtW6zrKH7Z8rMfJTGxqJ1/exec";
 
 // Данные формы и состояния теста
 const state = {
@@ -192,31 +192,24 @@ function submitData() {
     }
   };
 
-  // Используем fetch с правильной обработкой редиректов Google
+  // Отправляем как x-www-form-urlencoded — это обходит блокировки CORS в браузерах
   fetch(SCRIPT_URL, {
     method: "POST",
-    mode: "cors",
-    redirect: "follow",
     headers: {
-      "Content-Type": "text/plain;charset=utf-8"
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: JSON.stringify(payload)
+    body: "postData=" + encodeURIComponent(JSON.stringify(payload))
   })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error("Сетевая ошибка: " + response.status);
-    }
-    return response.json();
-  })
+  .then(res => res.json())
   .then(data => {
     if (data.success) {
       renderResults(data.result);
     } else {
-      alert("Ошибка Google Script: " + data.error);
+      alert("Ошибка скрипта: " + data.error);
     }
   })
   .catch(err => {
-    alert("Ошибка соединения: " + err.message + "\nПроверьте SCRIPT_URL и права доступа!");
+    alert("Ошибка соединения: " + err.message);
     console.error(err);
   });
 }
