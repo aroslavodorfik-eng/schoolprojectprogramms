@@ -1,10 +1,71 @@
 // ВСТАВЬ СЮДА СВОЮ ССЫЛКУ ИЗ GOOGLE APPS SCRIPT
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8Xzaih8CvjN9HY1sAYRZKgps20PUzCBEY6iXw5IhXdzUGtW6zrKH7Z8rMfJTGxqJ1/exec";
 
+// Список школ города Семей
+const semeySchools = [
+  "Средняя общеобразовательная школа №1",
+  "Средняя общеобразовательная школа №2",
+  "Средняя общеобразовательная школа №3",
+  "Средняя общеобразовательная школа №4",
+  "Средняя общеобразовательная школа №5",
+  "Средняя общеобразовательная школа №6",
+  "Средняя общеобразовательная школа №7",
+  "Средняя общеобразовательная школа №8",
+  "Средняя общеобразовательная школа №9",
+  "Средняя общеобразовательная школа №10",
+  "Средняя общеобразовательная школа №11",
+  "Средняя общеобразовательная школа №12",
+  "Средняя общеобразовательная школа №13",
+  "Средняя общеобразовательная школа №14",
+  "Средняя общеобразовательная школа №15",
+  "Средняя общеобразовательная школа №16",
+  "Средняя общеобразовательная школа №17",
+  "Средняя общеобразовательная школа №18",
+  "Средняя общеобразовательная школа №19",
+  "Средняя общеобразовательная школа №20",
+  "Средняя общеобразовательная школа №21",
+  "Средняя общеобразовательная школа №22",
+  "Средняя общеобразовательная школа №23",
+  "Средняя общеобразовательная школа №24",
+  "Средняя общеобразовательная школа №25",
+  "Средняя общеобразовательная школа №26",
+  "Средняя общеобразовательная школа №27",
+  "Средняя общеобразовательная школа №28",
+  "Средняя общеобразовательная школа №29",
+  "Средняя общеобразовательная школа №30",
+  "Средняя общеобразовательная школа №31",
+  "Средняя общеобразовательная школа №32",
+  "Средняя общеобразовательная школа №33",
+  "Средняя общеобразовательная школа №34",
+  "Средняя общеобразовательная школа №35",
+  "Средняя общеобразовательная школа №36",
+  "Средняя общеобразовательная школа №37",
+  "Средняя общеобразовательная школа №38",
+  "Средняя общеобразовательная школа №39",
+  "Средняя общеобразовательная школа №40",
+  "Средняя общеобразовательная школа №41",
+  "Средняя общеобразовательная школа №42",
+  "Средняя общеобразовательная школа №43",
+  "Средняя общеобразовательная школа №44",
+  "Средняя общеобразовательная школа №45",
+  "Средняя общеобразовательная школа №46",
+  "Средняя общеобразовательная школа №47",
+  "Средняя общеобразовательная школа №48",
+  "Средняя общеобразовательная школа №49",
+  "Назарбаев Интеллектуальная Школа (НИШ) г. Семей",
+  "Областной специализированный лицей-интернат «БІЛІМ-ИННОВАЦИЯ» для одаренных детей",
+  "Областной специализированный лицей №39 для одаренных детей",
+  "Экономический лицей",
+  "Гимназия №6",
+  "Частная школа «Жас Улан»",
+  "Другая школа / Колледж"
+];
+
 // Данные формы и состояния теста
 const state = {
   user: {
     fullName: "",
+    birthDate: "",
     age: "",
     school: "",
     grade: "",
@@ -73,8 +134,24 @@ document.addEventListener("DOMContentLoaded", () => {
   renderRegistration();
 });
 
+// Функция расчета возраста по дате рождения
+function calculateAge(birthDateString) {
+  const birthDate = new Date(birthDateString);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+}
+
 // 1. Экран регистрации
 function renderRegistration() {
+  const schoolOptions = semeySchools
+    .map(school => `<option value="${school}">${school}</option>`)
+    .join("");
+
   appContainer.innerHTML = `
     <h1 class="card-title">Тест на профориентацию</h1>
     <p class="card-subtitle">Ответьте на 30 вопросов для точного подбора специальностей и колледжей г. Семей.</p>
@@ -84,29 +161,41 @@ function renderRegistration() {
         <label>Имя и Фамилия</label>
         <input type="text" class="form-control" id="fullName" placeholder="Например: Иван Иванов" required>
       </div>
+
       <div class="form-group">
-        <label>Возраст и Класс</label>
-        <div style="display: flex; gap: 1rem;">
-          <input type="number" class="form-control" id="age" placeholder="Возраст (лет)" required>
-          <input type="text" class="form-control" id="grade" placeholder="Класс (например: 9)" required>
-        </div>
+        <label>Дата рождения (Календарь)</label>
+        <input type="date" class="form-control" id="birthDate" required>
       </div>
+
       <div class="form-group">
-        <label>Школа / Учебное заведение</label>
-        <input type="text" class="form-control" id="school" placeholder="Например: Школа №1" required>
+        <label>Класс / Курс</label>
+        <input type="text" class="form-control" id="grade" placeholder="Например: 9 класс" required>
       </div>
+
+      <div class="form-group">
+        <label>Школа / Учебное заведение (г. Семей)</label>
+        <select class="form-control" id="school" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main);">
+          <option value="" disabled selected>Выберите школу из списка...</option>
+          ${schoolOptions}
+        </select>
+      </div>
+
       <div class="form-group">
         <label>Ваши хобби и интересы</label>
         <input type="text" class="form-control" id="interests" placeholder="Например: компьютеры, спорт, рисование" required>
       </div>
+
       <button type="submit" class="btn-primary">Начать тестирование (30 вопросов) &rarr;</button>
     </form>
   `;
 
   document.getElementById("regForm").addEventListener("submit", (e) => {
     e.preventDefault();
+    const birthDateVal = document.getElementById("birthDate").value;
+    
     state.user.fullName = document.getElementById("fullName").value;
-    state.user.age = document.getElementById("age").value;
+    state.user.birthDate = birthDateVal;
+    state.user.age = calculateAge(birthDateVal); // Вычисляем возраст по календарю
     state.user.grade = document.getElementById("grade").value;
     state.user.school = document.getElementById("school").value;
     state.user.interests = document.getElementById("interests").value;

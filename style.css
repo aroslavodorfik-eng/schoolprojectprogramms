@@ -1,328 +1,471 @@
-/* ==========================================================================
-   SmartChoice Semey — Tech Minimalist Style
-   ========================================================================== */
-
 :root {
-  --bg-primary: #f8fafc;
-  --bg-card: #ffffff;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --accent: #38bdf8;
+  --accent-purple: #a855f7;
+  --bg-dark: #090d16;
+  --card-bg: rgba(15, 23, 42, 0.75);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --text-main: #f8fafc;
   --text-muted: #94a3b8;
-  --accent: #2563eb;
-  --accent-hover: #1d4ed8;
-  --accent-light: #eff6ff;
-  --border-color: #e2e8f0;
-  --border-focus: #93c5fd;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --radius: 24px;
+  --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(99, 102, 241, 0.15);
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  font-family: var(--font-family);
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* Header & Navigation */
+/* --- Анимированный векторный фон --- */
+.bg-blobs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.45;
+  animation: float 20s infinite ease-in-out alternate;
+}
+
+.blob-1 {
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, #6366f1 0%, #4f46e5 100%);
+  top: -10%;
+  left: -5%;
+}
+
+.blob-2 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, #a855f7 0%, #ec4899 100%);
+  bottom: -15%;
+  right: -10%;
+  animation-delay: -7s;
+}
+
+.blob-3 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, #0ea5e9 0%, #2563eb 100%);
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: -12s;
+}
+
+@keyframes float {
+  0% { transform: translate(0px, 0px) scale(1); }
+  50% { transform: translate(40px, -60px) scale(1.1); }
+  100% { transform: translate(-30px, 40px) scale(0.95); }
+}
+
+.bg-grid {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 32px 32px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* --- Хедер --- */
 header {
-  background: var(--bg-card);
+  background: rgba(9, 13, 22, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
-  z-index: 50;
-  backdrop-filter: blur(8px);
-  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 100;
 }
 
 .header-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 1rem 1.5rem;
+  padding: 1.125rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .logo {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-icon-wrapper {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3));
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+.logo-text {
+  font-weight: 800;
+  font-size: 1.25rem;
   letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.logo-text span {
+  background: linear-gradient(135deg, #38bdf8, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.location-badge {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--card-border);
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.logo span {
-  color: var(--accent);
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #10b981;
+  animation: pulse 2s infinite;
 }
 
-.location-badge {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  background: var(--bg-primary);
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  border: 1px solid var(--border-color);
+@keyframes pulse {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
-/* Main Container */
+/* --- Главная карточка --- */
 main {
   flex: 1;
-  max-width: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.25rem;
+  z-index: 1;
+}
+
+.card-wrapper {
+  position: relative;
   width: 100%;
-  margin: 2.5rem auto;
-  padding: 0 1.5rem;
+  max-width: 680px;
 }
 
-/* Card Wrapper */
+.card-glow {
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.4), rgba(168, 85, 247, 0.2), rgba(56, 189, 248, 0.4));
+  border-radius: calc(var(--radius) + 1px);
+  filter: blur(12px);
+  opacity: 0.6;
+  z-index: 0;
+  transition: opacity 0.3s;
+}
+
 .card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: 2.5rem;
-  box-shadow: var(--shadow-md);
-  transition: var(--transition);
+  position: relative;
+  z-index: 1;
+  background: var(--card-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: var(--radius);
+  padding: 2.75rem 2.5rem;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--card-border);
+  animation: cardAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+@keyframes cardAppear {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* --- Типографика --- */
 .card-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  color: var(--text-primary);
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .card-subtitle {
-  font-size: 0.9375rem;
-  color: var(--text-secondary);
-  margin-bottom: 2rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 2.25rem;
 }
 
-/* Form Styles */
+/* --- Элементы формы --- */
 .form-group {
   margin-bottom: 1.5rem;
 }
 
 .form-group label {
   display: block;
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
+  color: #e2e8f0;
+  letter-spacing: 0.01em;
 }
 
-.form-control {
+.form-control, select.form-control {
   width: 100%;
-  padding: 0.75rem 1rem;
-  font-family: inherit;
-  font-size: 0.9375rem;
-  color: var(--text-primary);
-  background-color: var(--bg-primary);
+  padding: 0.9rem 1.125rem;
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
+  border-radius: 14px;
+  font-size: 0.95rem;
+  background: rgba(15, 23, 42, 0.6);
+  color: var(--text-main);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   outline: none;
-  transition: var(--transition);
 }
 
-.form-control:focus {
-  border-color: var(--accent);
-  background-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+.form-control::placeholder {
+  color: #475569;
 }
 
-/* Question Section */
-.question-block {
-  margin-bottom: 2rem;
+.form-control:focus, select.form-control:focus {
+  border-color: var(--primary);
+  background: rgba(15, 23, 42, 0.9);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2), 0 0 20px rgba(99, 102, 241, 0.15);
 }
 
-.question-text {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 1.25rem;
-  letter-spacing: -0.01em;
+select.form-control option {
+  background-color: #0f172a;
+  color: #f8fafc;
 }
 
-.options-grid {
-  display: grid;
-  gap: 0.75rem;
-}
-
-.option-btn {
-  width: 100%;
-  padding: 1rem 1.25rem;
-  text-align: left;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  font-size: 0.9375rem;
-  color: var(--text-primary);
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.option-btn:hover {
-  border-color: var(--accent);
-  background-color: var(--accent-light);
-  color: var(--accent);
-}
-
-/* Buttons */
+/* --- Основные кнопки --- */
 .btn-primary {
   width: 100%;
-  padding: 0.875rem 1.5rem;
-  font-size: 0.9375rem;
-  font-weight: 600;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
   color: #ffffff;
-  background-color: var(--accent);
   border: none;
-  border-radius: var(--radius-sm);
+  padding: 1rem 1.75rem;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: var(--transition);
-  display: inline-flex;
-  align-items: center;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
   justify-content: center;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 8px 20px -4px rgba(99, 102, 241, 0.4);
+  margin-top: 1rem;
 }
 
 .btn-primary:hover {
-  background-color: var(--accent-hover);
-  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -4px rgba(99, 102, 241, 0.6);
+  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
 }
 
-/* Loader */
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* --- Кнопки выборов в тесте --- */
+.options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  margin-top: 1.75rem;
+}
+
+.option-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  padding: 1.125rem 1.35rem;
+  border-radius: 16px;
+  text-align: left;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.option-btn:hover {
+  border-color: rgba(99, 102, 241, 0.5);
+  background: rgba(99, 102, 241, 0.1);
+  transform: translateX(6px);
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15);
+}
+
+/* --- Премиальный спинер загрузки --- */
 .loader-container {
   text-align: center;
   padding: 3rem 1rem;
 }
 
 .spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid var(--border-color);
+  width: 56px;
+  height: 56px;
+  border: 4px solid rgba(255, 255, 255, 0.08);
   border-top-color: var(--accent);
+  border-right-color: var(--primary);
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto 1.5rem auto;
+  animation: spin 0.9s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite;
+  margin: 0 auto 1.75rem;
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-/* Results Display */
+/* --- Блоки результатов --- */
 .result-header {
-  background: var(--accent-light);
-  border: 1px solid #dbeafe;
-  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
   padding: 1.25rem 1.5rem;
   margin-bottom: 2rem;
 }
 
 .result-header h3 {
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 1.1rem;
+  margin-bottom: 0.4rem;
   color: var(--accent);
-  margin-bottom: 0.5rem;
-}
-
-.result-header p {
-  font-size: 0.9375rem;
-  color: var(--text-secondary);
 }
 
 .profession-card {
+  background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border-radius: 18px;
   padding: 1.5rem;
   margin-bottom: 1.25rem;
-  background: var(--bg-card);
-  transition: var(--transition);
+  transition: border-color 0.2s;
 }
 
 .profession-card:hover {
-  box-shadow: var(--shadow-md);
-  border-color: #cbd5e1;
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .profession-title {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--text-primary);
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: #ffffff;
   margin-bottom: 0.5rem;
 }
 
 .profession-desc {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  margin-bottom: 1rem;
-}
-
-.college-list {
-  border-top: 1px solid var(--border-color);
-  padding-top: 1rem;
-  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
 }
 
 .college-item {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.875rem 1.125rem;
+  margin-top: 0.6rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0;
-  font-size: 0.875rem;
+  gap: 1rem;
 }
 
 .college-name {
-  font-weight: 600;
-  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #f1f5f9;
 }
 
 .college-spec {
-  color: var(--text-secondary);
   font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
 }
 
 .college-link {
+  font-size: 0.85rem;
   color: var(--accent);
   text-decoration: none;
-  font-weight: 500;
-  font-size: 0.8125rem;
+  font-weight: 700;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  background: rgba(56, 189, 248, 0.1);
+  transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .college-link:hover {
-  text-decoration: underline;
+  background: rgba(56, 189, 248, 0.2);
+  transform: translateX(2px);
 }
 
-/* Footer */
 footer {
   text-align: center;
-  padding: 2rem 1.5rem;
-  font-size: 0.8125rem;
+  padding: 2rem 1rem;
+  font-size: 0.85rem;
   color: var(--text-muted);
-  border-top: 1px solid var(--border-color);
-  background: var(--bg-card);
+  z-index: 1;
+}
+
+/* Мобильная адаптивность */
+@media (max-width: 640px) {
+  .card {
+    padding: 1.75rem 1.25rem;
+    border-radius: 20px;
+  }
+
+  .header-container {
+    padding: 1rem;
+  }
+
+  .card-title {
+    font-size: 1.4rem;
+  }
 }
